@@ -3,115 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suhu Digital | Web Downloader</title>
+    <title>Migel x KATE | Web Downloader</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: radial-gradient(circle at top, #1a2a44, #0d1117);
-            font-family: 'Poppins', sans-serif;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 400px;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        h1 {
-            color: #38bdf8;
-            font-weight: 800;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
-        }
-
-        p.sub-title {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-bottom: 25px;
-        }
-
-        .input-box {
-            width: 100%;
-            padding: 12px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            color: #38bdf8;
-            font-size: 14px;
-            margin-bottom: 15px;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, #0ea5e9, #38bdf8);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        #loadingBar {
-            width: 100%;
-            background: #1e293b;
-            height: 8px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            overflow: hidden;
-        }
-
-        #progress {
-            width: 0%;
-            height: 100%;
-            background: #22c55e;
-            transition: 0.5s;
-        }
-
-        #statusTxt {
-            font-size: 13px;
-            margin-top: 15px;
-            color: #22c55e;
-            display: none;
-        }
+        body { margin: 0; padding: 0; background: radial-gradient(circle at top, #1a2a44, #0d1117); font-family: 'Poppins', sans-serif; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { width: 90%; max-width: 400px; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; }
+        h1 { color: #38bdf8; font-weight: 800; margin-bottom: 5px; letter-spacing: 2px; }
+        .sub-title { font-size: 12px; opacity: 0.7; margin-bottom: 25px; }
+        .input-box { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 10px; color: #38bdf8; font-size: 14px; margin-bottom: 15px; outline: none; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 12px; background: linear-gradient(90deg, #0ea5e9, #38bdf8); border: none; border-radius: 10px; color: white; font-weight: 600; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .btn-main:active { transform: scale(0.95); }
+        #loadingBar { width: 100%; background: #1e293b; height: 8px; border-radius: 10px; margin-top: 20px; display: none; overflow: hidden; }
+        #progress { width: 0%; height: 100%; background: #22c55e; transition: 0.5s; }
+        #statusTxt { font-size: 13px; margin-top: 15px; color: #22c55e; display: none; }
+        
+        /* Gaya Tombol Hasil */
+        .result-container { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .btn-res { display: block; width: 100%; padding: 12px; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 14px; box-sizing: border-box; transition: 0.3s; }
+        .btn-video { background: #22c55e; border: 2px solid #22c55e; }
+        .btn-mp3 { background: transparent; border: 2px solid #eab308; color: #eab308; }
+        .btn-res:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>SUHU DIGITAL</h1>
-        <p class="sub-title">Sistem Deteksi & Downloader Video</p>
+        <p class="sub-title">Sistem Deteksi Video & MP3 Downloader</p>
 
         <input type="text" id="linkVideo" class="input-box" placeholder="Tempel Link TikTok di sini...">
-        
-        <button onclick="prosesDownload()">EKSEKUSI DOWNLOAD</button>
+        <button class="btn-main" onclick="prosesDownload()">EKSEKUSI DOWNLOAD</button>
 
-        <div id="loadingBar">
-            <div id="progress"></div>
-        </div>
-        <p id="statusTxt">✅ Menghubungkan ke server...</p>
+        <div id="loadingBar"><div id="progress"></div></div>
+        <div id="statusTxt"></div>
+        <div id="resultArea" class="result-container"></div>
     </div>
 
     <script>
@@ -120,35 +45,50 @@
             let status = document.getElementById("statusTxt");
             let bar = document.getElementById("loadingBar");
             let progress = document.getElementById("progress");
+            let resultArea = document.getElementById("resultArea");
 
-            if (link === "") {
-                alert("Woi, masukin link-nya dulu bray!");
+            // Reset Tampilan
+            resultArea.innerHTML = "";
+            status.style.color = "#22c55e";
+
+            if (!link.includes("tiktok.com")) {
+                alert("Woi bray, masukin link TikTok yang bener!");
                 return;
             }
 
-            // Reset & Start Loading
             bar.style.display = "block";
             status.style.display = "block";
-            progress.style.width = "40%";
-            status.innerText = "⏳ Menghubungkan ke server...";
+            progress.style.width = "30%";
+            status.innerText = "⏳ Sedang Menembus Server...";
 
             try {
-                // Eksekusi API TikWM (Mesin Download)
                 const response = await fetch(`https://www.tikwm.com/api/?url=${link}`);
                 const data = await response.json();
 
                 if (data.code === 0) {
                     progress.style.width = "100%";
-                    status.innerText = "✅ Video Ketemu! Mendownload...";
+                    status.innerText = "✅ Data Berhasil Ditarik!";
                     
-                    // Delay dikit biar bar-nya keliatan penuh dulu
-                    setTimeout(() => {
-                        window.location.href = data.data.play; 
-                    }, 1000);
+                    // Tombol Download Video
+                    let vBtn = document.createElement("a");
+                    vBtn.href = data.data.play;
+                    vBtn.target = "_blank";
+                    vBtn.className = "btn-res btn-video";
+                    vBtn.innerText = "📥 DOWNLOAD VIDEO (MP4)";
+                    
+                    // Tombol Download MP3
+                    let mBtn = document.createElement("a");
+                    mBtn.href = data.data.music;
+                    mBtn.target = "_blank";
+                    mBtn.className = "btn-res btn-mp3";
+                    mBtn.innerText = "🎵 DOWNLOAD MUSIK (MP3)";
+                    
+                    resultArea.appendChild(vBtn);
+                    resultArea.appendChild(mBtn);
                 } else {
-                    progress.style.width = "20%";
                     status.style.color = "#ef4444";
-                    status.innerText = "❌ Link Gak Valid atau Video Private!";
+                    status.innerText = "❌ Gagal! Video mungkin di-private bray.";
+                    progress.style.width = "10%";
                 }
             } catch (error) {
                 status.style.color = "#ef4444";
